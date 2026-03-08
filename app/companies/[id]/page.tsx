@@ -57,9 +57,11 @@ export default function CompanyProfilePage() {
     );
   }
 
+  const selectedCompany = company;
+
   function saveNote() {
     const notes = getNotes();
-    notes[company.id] = note;
+    notes[selectedCompany.id] = note;
     setNotes(notes);
     setLastUpdated(new Date().toLocaleTimeString());
   }
@@ -77,9 +79,9 @@ export default function CompanyProfilePage() {
       setListMessage("Select or create a list first");
       return;
     }
-    addCompanyToList(listId, company.id);
+    addCompanyToList(listId, selectedCompany.id);
     setLists(getLists());
-    setListMessage(`Added ${company.name} to list`);
+    setListMessage(`Added ${selectedCompany.name} to list`);
   }
 
   async function enrich() {
@@ -90,9 +92,9 @@ export default function CompanyProfilePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          companyId: company.id,
-          website: company.website,
-          companyName: company.name
+          companyId: selectedCompany.id,
+          website: selectedCompany.website,
+          companyName: selectedCompany.name
         })
       });
 
@@ -112,22 +114,22 @@ export default function CompanyProfilePage() {
   return (
     <>
       <section>
-        <h1 className="page-title">{company.name}</h1>
-        <p className="page-description">{company.description}</p>
+        <h1 className="page-title">{selectedCompany.name}</h1>
+        <p className="page-description">{selectedCompany.description}</p>
       </section>
 
       <section className="card meta-grid">
         <div className="meta-item">
           <p className="meta-label">Sector</p>
-          <p className="meta-value">{company.sector}</p>
+          <p className="meta-value">{selectedCompany.sector}</p>
         </div>
         <div className="meta-item">
           <p className="meta-label">Stage</p>
-          <p className="meta-value">{company.stage}</p>
+          <p className="meta-value">{selectedCompany.stage}</p>
         </div>
         <div className="meta-item">
           <p className="meta-label">HQ</p>
-          <p className="meta-value">{company.hq}</p>
+          <p className="meta-value">{selectedCompany.hq}</p>
         </div>
         <div className="meta-item">
           <p className="meta-label">Thesis score</p>
@@ -144,7 +146,7 @@ export default function CompanyProfilePage() {
             <span className="small">Newest first</span>
           </div>
           <div className="timeline">
-            {company.signals.map((signal) => (
+            {selectedCompany.signals.map((signal) => (
               <div key={`${signal.date}-${signal.text}`} className="timeline-item">
                 <strong>{signal.date}</strong>
                 <p style={{ margin: "4px 0 0" }}>{signal.text}</p>
